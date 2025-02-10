@@ -2,9 +2,9 @@
 import uuid
 # Import the models module from Django to define database models
 from django.db import models
-
+from django.contrib.auth.models import AbstractUser
 #Define a new model class called User that inherits from models.Model
-class User(models.Model):
+class User(AbstractUser):
     pass
 
 # Define a new model class called Product that inherits from models.Model
@@ -56,6 +56,7 @@ class Order(models.Model):
     # The (__related_name__) argument specifies the name to use for the reverse relation from the Product model back to the model that contains this Many-to-Many field.
     # This means that if you have a Product instance, you can access all related orders using 
     products = models.ManyToManyField(Product, through='OrderItem', related_name='orders')
+    
     # Define a string representation method for the Order model
     def __str__(self):
          # Return a formatted string showing the order ID and the username of the user who placed the order
@@ -63,7 +64,7 @@ class Order(models.Model):
     
 
 #This defines a new model class called ItemOrder, which represents an item in an order. It inherits from models.Model, making it a Django model.
-class ItemOrder(models.Model):
+class OrderItem(models.Model):
     #This creates a foreign key relationship to the Order model. If the related order is deleted, all associated ItemOrder instances will also be deleted due to the CASCADE behavior.
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     #This creates a foreign key relationship to the Product model
